@@ -1,8 +1,15 @@
 import './App.css';
+import Announcement from './components/Announcement';
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
-    <h1>Hello</h1>
+    <>
+      <Announcement/>
+      <Navbar />
+      <HomePage />
+    </>
   );
 }
 

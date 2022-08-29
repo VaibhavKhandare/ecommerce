@@ -1,9 +1,11 @@
 import React from 'react'
-import Home from '../components/Home'
+import Slider from '../components/Slider'
 
 const HomePage = () => {
   return (
-    <Home />
+    <>
+    <Slider />
+    </>
   )
 }
 

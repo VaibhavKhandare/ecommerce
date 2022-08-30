@@ -1,7 +1,6 @@
 import React from 'react'
 import {Input} from 'antd'
 import { UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-
 import { NavbarContainer, Right, Left, Header } from './styles'
 
 const Navbar = () => {

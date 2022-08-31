@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     width: 100%;
-    background-color:wheat;
     height: 100vh;
 `;
 
@@ -25,6 +24,7 @@ export const Wrapper = styled.div`
 export const Image = styled.img`
     width:100%;
     height:100%;
+    object-fit:contain;
 `;
 export const ImageContainer = styled.div`
     height:100%;
@@ -41,3 +41,13 @@ export const Slide = styled.div`
     display:flex;
     align-items: center;
 `;
+
+
+export const Title = styled.div`
+`;
+export const Desc  = styled.div`
+`;
+export const ShopButton = styled.div`
+`;
+
+

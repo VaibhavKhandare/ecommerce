@@ -1,32 +1,125 @@
-import React from 'react';
-import { RightOutlined, LeftOutlined } from '@ant-design/icons';
-import {Container, Arrow, Wrapper, Image, ImageContainer, InfoContainer, Slide, Title, Desc, ShopButton} from './styles'
+import React, { useEffect, useState, useMemo } from "react";
+import { connect } from "react-redux";
+import { sliderData } from "../../store/apiSlice";
+import { getAPI } from "../../asyncAPIMethods";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import {
+  Container,
+  Arrow,
+  Wrapper,
+  Image,
+  ImageContainer,
+  InfoContainer,
+  Slide,
+  Title,
+  Discount,
+  ShopButton,
+  DotsContainer,
+  Dots,
+} from "./styles";
 
+const useHover = () => {
+  const [hovered, setHovered] = useState(false);
 
+  const eventHandlers = useMemo(
+    () => ({
+      onMouseOver() {
+        setHovered(true);
+      },
+      onMouseOut() {
+        setHovered(false);
+      },
+    }),
+    []
+  );
 
-const Slider = () => {
+  return [hovered, eventHandlers];
+};
+
+let SLIDER_DIRECTION = 1;
+const Slider = ({ sliderDataFn, sliderData }) => {
+  // useEffect(()=>{
+  //   getAPI('https://fakestoreapi.com/productss/', sliderDataFn)
+  // },[])
+  const [shift, setShift] = useState(0);
+  const [hovered, eventHandlers] = useHover();
+  const handleShift = (no) => {
+    setShift((val) => val + no);
+  };
+  useEffect(() => {
+    if (hovered) return;
+    const slideInterval = setInterval(() => {
+      setShift((val) => {
+        if (val === 0) SLIDER_DIRECTION = 1;
+        else if (val === sliderData.length - 1) SLIDER_DIRECTION = -1;
+        return val + SLIDER_DIRECTION;
+      });
+    }, 2000);
+    return () => clearInterval(slideInterval);
+  }, [hovered]);
   return (
-    <Container>
-        <Arrow direction="left">
-            <RightOutlined />
-        </Arrow>
-        <Wrapper>
-            <Slide>
+    <Container {...eventHandlers}>
+      <Arrow
+        toShow={shift !== sliderData.length - 1}
+        direction="left"
+        onClick={() => {
+          handleShift(1);
+        }}
+      >
+        <RightOutlined />
+      </Arrow>
+      <Wrapper>
+        {sliderData.map((data, idx) => (
+          <Slide
+            key={idx}
+            onClick={() => {
+              console.log("data.link", data.link);
+            }}
+            shift={shift * 100}
+          >
             <ImageContainer>
-                <Image src="https://images.unsplash.com/photo-1589465885857-44edb59bbff2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" />
+              <Image src={data.imgUrl} />
             </ImageContainer>
             <InfoContainer>
-                <Title>Summer Sale</Title>
-                <Desc> Don't Compromise on Style! Get Flat 30% OFF NEW ARRIVAL</Desc>
-                <ShopButton>SHOP NOW</ShopButton>
+              <Title>{data.heading}</Title>
+              <br />
+              <Discount>{data.discount}% Discount</Discount>
+              <br />
+              <ShopButton>SHOP NOW</ShopButton>
             </InfoContainer>
-            </Slide>
-        </Wrapper>
-        <Arrow direction="right">
-            <LeftOutlined />
-        </Arrow>
+          </Slide>
+        ))}
+      </Wrapper>
+      <Arrow
+        toShow={shift !== 0}
+        direction="right"
+        onClick={() => {
+          handleShift(-1);
+        }}
+      >
+        <LeftOutlined />
+      </Arrow>
+      <DotsContainer>
+        {sliderData.map((data, idx) => (
+          <Dots
+            key={idx}
+            isActive={idx === shift}
+            onClick={() => {
+              setShift(idx);
+            }}
+          ></Dots>
+        ))}
+      </DotsContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default Slider
+const mapStateToProps = (state) => {
+  const { apiData = {} } = state || {};
+  const { sliderData = [] } = apiData;
+  return { sliderData };
+};
+
+export default connect(mapStateToProps, {
+  sliderDataFn: sliderData,
+})(Slider);

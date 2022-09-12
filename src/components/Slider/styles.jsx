@@ -1,5 +1,6 @@
+import { Slider } from "antd";
 import styled, { keyframes } from "styled-components";
-import { COLOR } from "../../constants/theme";
+import { COLOR } from "../../util/theme";
 
 const toAndFro = keyframes`
  0% {left:-100%}
@@ -99,11 +100,11 @@ export const Dots = styled.div`
   height: 10px;
   width: 10px;
   background-color: ${(props) =>
-    props.isActive ? COLOR.MEDIUM_DARK : COLOR.LIGHT_GREY};
+    props.isActive ? COLOR.MEDIUM_GREY : COLOR.LIGHT_GREY};
   margin-inline: 5px;
   border-radius: 100%;
   cursor: pointer;
   &:hover {
-    background-color: ${COLOR.MEDIUM_DARK};
+    background-color: ${COLOR.MEDIUM_GREY};
   }
 `;

@@ -1,14 +1,16 @@
 import React from "react";
 import Slider from "../components/Slider";
 import Categories from "../components/Categories";
-import Products from "../components/Products";
+import TopProducts from "../components/TopProducts";
+import AllProducts from "../components/AllProducts";
 
 const HomePage = () => {
   return (
     <>
       <Slider />
       <Categories />
-      <Products />
+      {/* <TopProducts /> */}
+      <AllProducts />
     </>
   );
 };

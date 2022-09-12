@@ -15,7 +15,7 @@ import {
 const Categories = ({ categoriesData }) => {
   return (
     <Container>
-      <TopTitle>TOP CATEGORIES</TopTitle>
+      <TopTitle>TRENDING</TopTitle>
       <CategoryContainer>
         {categoriesData.map((data) => (
           <CategoryItem>
@@ -35,7 +35,6 @@ const Categories = ({ categoriesData }) => {
 const mapStateToProps = (state) => {
   const { apiData } = state;
   const { categoriesData } = apiData;
-  console.log("state", categoriesData);
   return { categoriesData };
 };
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { connect } from "react-redux";
 import { sliderData } from "../../store/apiSlice";
-import { getAPI } from "../../asyncAPIMethods";
+import { getAPI } from "../../util/asyncAPIMethods";
+import { useHover } from "../../util/customHook";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import {
   Container,
@@ -17,24 +18,6 @@ import {
   DotsContainer,
   Dots,
 } from "./styles";
-
-const useHover = () => {
-  const [hovered, setHovered] = useState(false);
-
-  const eventHandlers = useMemo(
-    () => ({
-      onMouseOver() {
-        setHovered(true);
-      },
-      onMouseOut() {
-        setHovered(false);
-      },
-    }),
-    []
-  );
-
-  return [hovered, eventHandlers];
-};
 
 let SLIDER_DIRECTION = 1;
 const Slider = ({ sliderDataFn, sliderData }) => {

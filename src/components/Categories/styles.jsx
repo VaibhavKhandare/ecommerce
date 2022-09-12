@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import { COLOR } from "../../constants/theme";
+import { COLOR, SHADOW } from "../../util/theme";
 
 export const Container = styled.div`
   margin-top: 70px;
+  margin-bottom: 70px;
 `;
 export const TopTitle = styled.div`
   font-family: "Roboto Slab", serif;
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 15px;
   margin-left: 30px;
 `;
@@ -40,7 +41,7 @@ export const Title = styled.div`
   font-size: 2rem;
   font-weight: 800;
   color: white;
-  text-shadow: 0px 0px 4px black;
+  text-shadow: ${SHADOW.DARK_SHADOW};
 `;
 
 export const ShopButton = styled.span`

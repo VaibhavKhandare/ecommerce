@@ -28,8 +28,12 @@ const Stars = ({ rating, reviewLength }) => (
 
 const Product = ({ cardData = {}, cardDataFn }) => {
   const [similarData, setSimilarData] = useState([]);
+  const [url, setUrl] = useState(window.location.pathname);
+  console.log("url", url);
   useEffect(() => {
-    getAPI("http://localhost:4000" + window.location.pathname).then((data) => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    getAPI("http://localhost:4000" + url).then((data) => {
+      console.log("data", data);
       cardDataFn(data);
       getAPI("http://localhost:4000/search", { brand: data.brand }).then(
         (sdata) => {
@@ -37,7 +41,7 @@ const Product = ({ cardData = {}, cardDataFn }) => {
         }
       );
     });
-  }, []);
+  }, [url]);
   const { images = [] } = cardData;
   return (
     <>
@@ -69,7 +73,7 @@ const Product = ({ cardData = {}, cardDataFn }) => {
       </Container>
       <SimilarProductsContainer>
         <h1>Similar Products</h1>
-        <CardsContainer data={similarData}></CardsContainer>
+        <CardsContainer data={similarData} setUrl={setUrl}></CardsContainer>
       </SimilarProductsContainer>
     </>
   );

@@ -5,11 +5,7 @@ import { postAPI } from "../../util/asyncAPIMethods";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
-  // // const data =
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log(`The name you entered was:`, event);
-  // };
+  const auth = localStorage.getItem("user");
   const [err, setErr] = useState("");
   const handleLogin = (e) => {
     e.preventDefault();
@@ -19,7 +15,6 @@ const Login = () => {
     };
     postAPI("http://localhost:4000/users/login", data).then((res) => {
       if (res?.status === 1) {
-        console.log("sex");
         message.info("Logged in Successfully");
         localStorage.setItem(
           "user",
@@ -54,10 +49,20 @@ const Login = () => {
       }
     });
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   return (
     <Container>
       <StyledTabs defaultActiveKey="1">
         <StyledTabs.TabPane tab="Sign in" key="1">
+          {auth && (
+            <div>
+              You are already signed in{" "}
+              <a onClick={handleLogout}>click to logout</a>
+            </div>
+          )}
           <StyledForm onSubmit={handleLogin}>
             <input
               type="text"

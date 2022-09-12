@@ -26,7 +26,7 @@ const ImageContainer = ({ images = [] }) => {
     </CardImageOverflow>
   );
 };
-export const CardsContainer = ({ data = [] }) => {
+export const CardsContainer = ({ data = [], setUrl }) => {
   const navigate = useNavigate();
   return (
     <Container>
@@ -34,7 +34,9 @@ export const CardsContainer = ({ data = [] }) => {
         <CenterColumn key={idx}>
           <CardContainer
             onClick={() => {
-              navigate(`/product/${oneCard._id}`);
+              if (setUrl) {
+                setUrl(`/product/${oneCard._id}`);
+              } else navigate(`/product/${oneCard._id}`);
             }}
           >
             <ImageContainer images={oneCard.images || []} />

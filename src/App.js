@@ -8,6 +8,9 @@ import ProductPage from './pages/ProductPage';
 import AllProducts from './components/AllProducts';
 import LoginPage from './pages/LoginPage';
 import Footer from './components/Footer';
+import PrivateComponent from './components/PrivateComponent';
+
+import User from './components/User';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -27,6 +30,9 @@ function App() {
         <Route path='/' element={<HomePage></HomePage>} />
         <Route path='/product' element={<AllProducts />} />
         <Route path='/product/:id' element={<ProductPage/>} />
+        <Route element={<PrivateComponent/>}>        
+        <Route path='/user' element={<User/>} />
+        </Route>        
         <Route path='/login' element={<LoginPage/>} />
         <Route path="*" element={<Navigate to="/" />}/>
       </Routes>

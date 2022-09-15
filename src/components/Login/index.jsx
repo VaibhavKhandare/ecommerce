@@ -16,10 +16,7 @@ const Login = () => {
     postAPI("http://localhost:4000/users/login", data).then((res) => {
       if (res?.status === 1) {
         message.info("Logged in Successfully");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ name: e.target.usernameOrEmail.value })
-        );
+        localStorage.setItem("user", JSON.stringify(res.data));
         navigate(`/`);
       } else {
         setErr("Invalid Credentials");
@@ -40,10 +37,7 @@ const Login = () => {
     postAPI("http://localhost:4000/users/create", data).then((res) => {
       if (res?.status === 1) {
         message.info("Account Created Successfully");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ name: e.target.username.value })
-        );
+        localStorage.setItem("user", JSON.stringify(res.data));
       } else {
         setErr(res.msg);
       }

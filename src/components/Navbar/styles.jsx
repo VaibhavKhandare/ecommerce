@@ -10,6 +10,7 @@ export const NavbarContainer = Styled.div`
 export const Header = Styled.div`
     text-transform: uppercase;
     font-size: 24px;
+    cursor: pointer;
 `;
 
 export const Right = Styled.div`
@@ -25,5 +26,6 @@ export const Left = Styled.div`
     align-items: center;
     *{
         margin-inline: 4px;
+        cursor:pointer;
     }
 `;

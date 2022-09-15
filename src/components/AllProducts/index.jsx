@@ -29,7 +29,14 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   useEffect(() => {
-    getAPI("http://localhost:4000/search/").then((data) => {
+    // let url = new URL(window.location.search);
+    // console.log("url", window.location.search);
+    const params = new URLSearchParams(window.location.search);
+    // const params = new URLSearchParams(window.loca tion.href);
+    // console.log(Object.fromEntries(Array(...params.searchParams.entries())));
+    // console.log("params", ...params.entries());
+    // console.log("window.location,href", window.location.params);
+    getAPI("http://localhost:4000/search/", params.entries()).then((data) => {
       setIsLoading(false);
       cardsDataFn(data);
     });

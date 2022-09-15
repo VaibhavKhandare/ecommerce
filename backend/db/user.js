@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     name: {type: String,unique: true},
     email: {type: String,unique: true},
     password: String,
+    cart: Array,
 });
 const UserModel = mongoose.model('users', UserSchema);
 
@@ -12,25 +13,51 @@ const showAllUsers = async ()=>{
     const data = await UserModel.find({});
     return data
 }
+
 const createUser = async (userData)=>{
     try{
-        await UserModel.create(userData);
-        return {status: 1, msg: 'user created successfully'}
+        const data = await UserModel.create(userData);
+        const {name, _id} = data;
+        return {status: 1, msg: 'user created successfully', data: {name, _id}}
     }catch(err){
         const errMsg = `${(Object.keys(err.keyValue) || [])[0]} Already Taken`;
         return {status: 0, msg: errMsg}
     }
 }
-const loginUser = async (userData)=>{
-    
-    const data = await UserModel.find({name:userData.userNameEmail}) || [];
-    if(data.length>0 && data[0]?.password === userData.password){
-        return {status:1, msg: 'Logged in SuccessFully'} 
+const loginUser = async (userData)=>{    
+    const data = await UserModel.findOne({name:userData.userNameEmail});
+    if(data && data?.password === userData.password){
+        const {name, _id} = data;
+        return {status:1, msg: 'Logged in SuccessFully', data: {name, _id}} 
     }
     return {status:0, msg: 'Invalid Credentials'}
 }
+const addToCart = async (prodData)=>{    
+    const {userId, productId, name, price} = prodData
+    await UserModel.updateOne(
+        { _id: userId }, 
+        { $push: { cart: {productId, name, price} } }
+    );
+    const data = await UserModel.findById(userId)?.cart;
+    return data;
+}
+const removeFromCart = async (prodData)=>{
+    const {userId, productId} = prodData
+    await UserModel.updateMany(
+        { _id: userId }, 
+        { $pull: { cart: {productId} }}, { safe: true, multi:true }
+    );
+    const data = await UserModel.findById(userId)?.cart;
+    return data;
+}
 
-module.exports = {showAllUsers, createUser, loginUser}
+const searchUser = async (_id)=>{
+    return await UserModel.findOne({_id});
+}
+
+
+
+module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser}
 
 //add data according to json file
 // const proddata = require('./data/myntra_fashion_products_free_dataset.json')
@@ -51,7 +78,6 @@ module.exports = {showAllUsers, createUser, loginUser}
 
 // const deleteAll = async ()=>{
 //     const data = await UserModel.deleteMany({})
-//     console.log(data)
 //     return data
 // }
 // console.log(deleteAll())

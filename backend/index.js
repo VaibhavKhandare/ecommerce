@@ -1,7 +1,8 @@
 const cors = require('cors');
 const express = require('express')
 const {show,showAll,showIndex, showPage} = require('./db/product')
-const {showAllUsers, createUser, loginUser} = require('./db/user')
+const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
+const {showSliders} = require('./db/HomePage/slider')
 
 
 const app =express();
@@ -37,8 +38,27 @@ app.post('/users/create',async(req,res)=>{
     res.send(await createUser(req.body));
 })
 
+app.get('/user/:id',async(req,res)=>{
+    res.send( await searchUser(req.params.id));
+})
+
 app.post('/users/login',async(req,res)=>{
     res.send(await loginUser(req.body));
 })
+
+app.get('/cart/add',async(req,res)=>{
+    const data = await addToCart(req.query)
+    res.send({data, status: 1});
+});
+
+app.get('/cart/remove',async(req,res)=>{
+    const data = await removeFromCart(req.query)
+    res.send({data, status: 1});
+});
+
+app.get('/data/slider',async(req,res)=>{
+    const data = await showSliders(req.query)
+    res.send(data);
+});
 
 app.listen(4000)

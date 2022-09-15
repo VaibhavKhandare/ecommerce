@@ -1,31 +1,53 @@
-import React from "react";
-import { Input } from "antd";
+import React, { useEffect } from "react";
+import { Badge } from "antd";
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { NavbarContainer, Right, Left, Header, UserName } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { cartData } from "../../store/apiSlice";
+import { connect } from "react-redux";
+import { getAPI } from "../../util/asyncAPIMethods";
 
-const Navbar = () => {
-  const userName = JSON.parse(localStorage.getItem("user") || "{}")?.name || "";
+const Navbar = ({ cartData, cartDataFn }) => {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const userName = userData?.name || "";
   const navigate = useNavigate();
-
+  useEffect(() => {
+    // cartDataFn();
+    if (userData?.name) {
+      getAPI(`http://localhost:4000/user/${userData._id}`).then((res) =>
+        cartDataFn(res.cart)
+      );
+    }
+  }, [userName]);
   return (
     <NavbarContainer>
       <Right>
-        <Header>LAMA</Header>
-      </Right>
-      <Left>
-        <Input.Search placeholder="Search Item" />
-        <UserOutlined
+        <Header
           onClick={() => {
-            navigate("/user");
+            navigate("/");
           }}
-          style={{ fontSize: "20px" }}
-        />
+        >
+          LAMA
+        </Header>
+      </Right>
+      <Left
+        onClick={() => {
+          navigate("/user");
+        }}
+      >
+        {/* <Input.Search placeholder="Search Item" /> */}
+        <UserOutlined style={{ fontSize: "20px" }} />
         <UserName>Hey {userName}</UserName>
-        <ShoppingCartOutlined style={{ fontSize: "20px" }} />
+        <Badge count={cartData.length} size="small" showZero>
+          <ShoppingCartOutlined color="orange" style={{ fontSize: "20px" }} />
+        </Badge>
       </Left>
     </NavbarContainer>
   );
 };
 
-export default Navbar;
+const mapStateToProps = (state) => {
+  const cartData = state?.apiData?.cartData;
+  return { cartData };
+};
+export default connect(mapStateToProps, { cartDataFn: cartData })(Navbar);

@@ -23,21 +23,21 @@ function App() {
     <>
     <Provider store = {store}>
       <BrowserRouter>
-      <Container>
-      <Announcement/>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<HomePage></HomePage>} />
-        <Route path='/product' element={<AllProducts />} />
-        <Route path='/product/:id' element={<ProductPage/>} />
-        <Route element={<PrivateComponent/>}>        
-        <Route path='/user' element={<User/>} />
-        </Route>        
-        <Route path='/login' element={<LoginPage/>} />
-        <Route path="*" element={<Navigate to="/" />}/>
-      </Routes>
-      <Footer />
-      </Container>
+        <Container>
+          <Announcement/>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<HomePage></HomePage>} />
+            <Route path='/product' element={<AllProducts />} />
+            <Route path='/product/:id' element={<ProductPage/>} />
+            <Route element={<PrivateComponent/>}>        
+            <Route path='/user' element={<User/>} />
+            </Route>        
+            <Route path='/login' element={<LoginPage/>} />
+            {/* <Route path="*" element={<Navigate to="/" />}/> */}
+          </Routes>
+          <Footer />
+        </Container>
       </BrowserRouter>
       </Provider>
     </>

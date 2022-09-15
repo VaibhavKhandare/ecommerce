@@ -18,12 +18,18 @@ import {
   DotsContainer,
   Dots,
 } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 let SLIDER_DIRECTION = 1;
-const Slider = ({ sliderDataFn, sliderData }) => {
-  // useEffect(()=>{
-  //   getAPI('https://fakestoreapi.com/productss/', sliderDataFn)
-  // },[])
+
+const Slider = ({ sliderData, sliderDataFn }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    getAPI("http://localhost:4000/data/slider").then((res) =>
+      sliderDataFn(res)
+    );
+  }, []);
+
   const [shift, setShift] = useState(0);
   const [hovered, eventHandlers] = useHover();
   const handleShift = (no) => {
@@ -51,28 +57,32 @@ const Slider = ({ sliderDataFn, sliderData }) => {
       >
         <RightOutlined />
       </Arrow>
-      <Wrapper>
-        {sliderData.map((data, idx) => (
-          <Slide
-            key={idx}
-            onClick={() => {
-              console.log("data.link", data.link);
-            }}
-            shift={shift * 100}
-          >
-            <ImageContainer>
-              <Image src={data.imgUrl} />
-            </ImageContainer>
-            <InfoContainer>
-              <Title>{data.heading}</Title>
-              <br />
-              <Discount>{data.discount}% Discount</Discount>
-              <br />
-              <ShopButton>SHOP NOW</ShopButton>
-            </InfoContainer>
-          </Slide>
-        ))}
-      </Wrapper>
+      {sliderData.length && (
+        <Wrapper>
+          {sliderData.map((data, idx) => (
+            <Slide
+              key={idx}
+              onClick={() => {
+                // console.log("data.link", data.link);
+                navigate(data.link);
+              }}
+              shift={shift * 100}
+            >
+              <ImageContainer>
+                <Image src={data.imgUrl} />
+              </ImageContainer>
+              <InfoContainer>
+                <Title>{data.title}</Title>
+                <br />
+                <Discount>{data.discount}% Discount</Discount>
+                <br />
+                <ShopButton>SHOP NOW</ShopButton>
+              </InfoContainer>
+            </Slide>
+          ))}
+        </Wrapper>
+      )}
+
       <Arrow
         toShow={shift !== 0}
         direction="right"
@@ -103,6 +113,4 @@ const mapStateToProps = (state) => {
   return { sliderData };
 };
 
-export default connect(mapStateToProps, {
-  sliderDataFn: sliderData,
-})(Slider);
+export default connect(mapStateToProps, { sliderDataFn: sliderData })(Slider);

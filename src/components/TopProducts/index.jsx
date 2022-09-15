@@ -38,7 +38,7 @@ const TopProducts = ({ productsData }) => {
     <Container>
       <ContainerTitle>Top Buys</ContainerTitle>
       <ProductImages>
-        {productsData.map((data) => (
+        {productsData?.map((data) => (
           <ItemContainer>
             <Image src={data.img} alt="products" />
             <Icons />

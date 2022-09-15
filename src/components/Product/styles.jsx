@@ -5,34 +5,58 @@ export const Container = styled.div`
   margin: 10px 30px;
   display: flex;
   justify-content: center;
-  min-height: 80vh;
+  align-items: center;
+  max-height: 80vh;
 `;
 
 export const ImageContainer = styled.div`
   width: 60%;
   min-height: 200px;
+  max-height: 780px;
+  margin-right: 10px;
   display: grid;
   grid-template-columns: auto auto auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track-piece {
+    margin: 10px 0px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #00000027;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${COLOR.MEDIUM_GREY};
+    border-radius: 10px;
+  }
 `;
 
 export const InfoContainer = styled.div`
   width: 40%;
   font-family: "Roboto Slab", serif;
-  padding: 120px 20px;
-  padding-left: 20px;
 `;
 
-export const Image = styled.img`
+export const ImgContainer = styled.div`
+  overflow: hidden;
   padding: 10px;
   width: 100%;
   box-shadow: ${SHADOW.MEDIUM_DARK_SHADOW};
+`;
+
+export const Image = styled.img`
+  width: 100%;
   transform: scale(1);
   &:hover {
     transform: scale(1.05);
   }
   transition-property: transform;
   transition-duration: 0.5s;
-  overflow: hidden;
 `;
 
 export const Name = styled.div`

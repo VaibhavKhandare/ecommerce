@@ -15,7 +15,7 @@ const Navbar = ({ cartData, cartDataFn }) => {
     // cartDataFn();
     if (userData?.name) {
       getAPI(`http://localhost:4000/user/${userData._id}`).then((res) =>
-        cartDataFn(res.cart)
+        cartDataFn(res?.cart)
       );
     }
   }, [userName]);
@@ -38,7 +38,7 @@ const Navbar = ({ cartData, cartDataFn }) => {
         {/* <Input.Search placeholder="Search Item" /> */}
         <UserOutlined style={{ fontSize: "20px" }} />
         <UserName>Hey {userName}</UserName>
-        <Badge count={cartData.length} size="small" showZero>
+        <Badge count={cartData?.length} size="small" showZero>
           <ShoppingCartOutlined color="orange" style={{ fontSize: "20px" }} />
         </Badge>
       </Left>

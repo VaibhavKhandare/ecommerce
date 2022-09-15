@@ -57,9 +57,9 @@ const Slider = ({ sliderData, sliderDataFn }) => {
       >
         <RightOutlined />
       </Arrow>
-      {sliderData.length && (
+      {sliderData?.length && (
         <Wrapper>
-          {sliderData.map((data, idx) => (
+          {sliderData?.map((data, idx) => (
             <Slide
               key={idx}
               onClick={() => {
@@ -93,7 +93,7 @@ const Slider = ({ sliderData, sliderDataFn }) => {
         <LeftOutlined />
       </Arrow>
       <DotsContainer>
-        {sliderData.map((data, idx) => (
+        {sliderData?.map((data, idx) => (
           <Dots
             key={idx}
             isActive={idx === shift}

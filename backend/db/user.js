@@ -38,8 +38,9 @@ const addToCart = async (prodData)=>{
         { _id: userId }, 
         { $push: { cart: {productId, name, price} } }
     );
-    const data = await UserModel.findById(userId)?.cart;
-    return data;
+    const data = await UserModel.findById(userId);
+    // console.log('data', data?.cart)
+    return data?.cart;
 }
 const removeFromCart = async (prodData)=>{
     const {userId, productId} = prodData
@@ -47,8 +48,8 @@ const removeFromCart = async (prodData)=>{
         { _id: userId }, 
         { $pull: { cart: {productId} }}, { safe: true, multi:true }
     );
-    const data = await UserModel.findById(userId)?.cart;
-    return data;
+    const data = await UserModel.findById(userId);
+    return data?.cart;
 }
 
 const searchUser = async (_id)=>{

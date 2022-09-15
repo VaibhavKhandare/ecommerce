@@ -90,6 +90,27 @@ const showPage = async ({key},pageNo=1)=>{
 
 module.exports = {show,showAll,showIndex, showPage}
 
+// const fs = require('fs');
+// const Brands = {}
+// const categoryMaker = async({key}={})=>{
+//     const data = await showAll({});
+//     data.forEach(data=>{
+//         const tempArr = data.name.split(' ');
+//         tempArr.forEach(ns=> Brands[ns] = Brands[ns]?  Brands[ns]+1 : 1 )
+//     })
+//     console.log('Brands', Brands)
+//     const res = Object.keys(Brands)
+//     .sort(function(a, b){
+//         // console.log('Brands[a]', Brands[a])
+//         return Brands[b] - Brands[a]})
+//     .reduce((accumulator, key) => {
+//         accumulator[key] = Brands[key];
+//         return accumulator;
+//     }, {});
+//     console.log('res', res)
+//         fs.writeFileSync('backend/data/categoryHash.json', JSON.stringify(res, null, 2) , 'utf-8');
+// }
+// categoryMaker();
 //add data according to json file
 // const proddata = require('./data/myntra_fashion_products_free_dataset.json')
 // proddata.forEach((data)=>{

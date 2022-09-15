@@ -10,20 +10,6 @@ export const Container = styled.div`
   padding: 10px;
   height: 77vh;
   overflow: auto;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-track {
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: ${COLOR.LIGHT_GREY};
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${COLOR.MEDIUM_GREY};
-    border-radius: 10px;
-  }
 `;
 
 export const CardContainer = styled.div`

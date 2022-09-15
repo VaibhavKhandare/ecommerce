@@ -36,24 +36,20 @@ const sliderData = [
     {
       title: 'Party Wear', discount: 20,  
       imgUrl:"https://i.ibb.co/DG69bQ4/2.png",
-      link:'product?search=party'
+      link:'product?search=dress'
     },
 ];
 
 
-const UpdateAll = async ()=>{
-        SliderModel.deleteMany({}).then(()=>{
-            sliderData.forEach((data)=>{
-                const ProdDetails =new SliderModel({
-                    title: data.title,
-                discount: data.discount,
-                imgUrl: data.imgUrl,
-                link: data.link,
-                })
-                ProdDetails.save((err, doc) => { err && console.log(data)});
-            })
-        });
-        
-        return 'updated'
-    }
+// const UpdateAll = async ()=>{
+//         SliderModel.deleteMany({}).then(()=>{
+//             sliderData.forEach((data)=>{
+//                 const ProdDetails =new SliderModel({
+//                     title: data.title,
+//                 discount: data.discount,
+//                 imgUrl: data.imgUrl,
+//                 link: data.link,
+//                 })
+//                 ProdDetails.save((err, doc) => { err && console.log(data)});
+//             })});     return 'updated'}
 // console.log(UpdateAll())

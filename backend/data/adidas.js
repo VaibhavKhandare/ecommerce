@@ -17,6 +17,7 @@ fs.createReadStream('src/constants/data/Adidas final.csv')
     })
     .on('end',function() {
         // temp =csvData;
-        fs.writeFileSync('./extracted.json', JSON.stringify(data, null, 2) , 'utf-8');
+        // points.sort(function(a, b){return b - a});
+        
       console.log('data');
     });

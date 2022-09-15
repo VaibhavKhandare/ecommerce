@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   Container,
   ImageContainer,
+  ImgContainer,
   InfoContainer,
   Image,
   Name,
@@ -40,7 +41,7 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
       cardDataFn(data);
       if (auth) {
         getAPI(`http://localhost:4000/user/${auth._id}`).then((res) => {
-          const { cart } = res;
+          const { cart = [] } = res;
           const index = cart
             .map((object) => object.productId)
             .indexOf(data._id);
@@ -69,6 +70,7 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
         if (res.status) {
           message.info("Successfully Added to Cart");
           setIsAlreadyInCart(1);
+          console.log("res.data", res.data);
           cartDataFn(res.data);
         }
       });
@@ -83,6 +85,7 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
         message.info("Removed from Cart");
         setIsAlreadyInCart(0);
         cartDataFn(res.data);
+        console.log("res.data", res);
       }
     });
   };
@@ -93,7 +96,9 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
       <Container>
         <ImageContainer>
           {images.map((val) => (
-            <Image src={val} />
+            <ImgContainer>
+              <Image src={val} />
+            </ImgContainer>
           ))}
         </ImageContainer>
         <InfoContainer>
@@ -123,7 +128,7 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
           <br />
           <ReviewContainer>
             Reviews
-            {cardData.reviews?.map((val) => val)}
+            {cardData?.reviews?.map((val) => val)}
           </ReviewContainer>
         </InfoContainer>
       </Container>

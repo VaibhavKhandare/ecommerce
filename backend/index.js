@@ -3,7 +3,8 @@ const express = require('express')
 const {show,showAll,showIndex, showPage} = require('./db/product')
 const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
 const {showSliders} = require('./db/HomePage/slider')
-
+const {showcategory} = require('./db/HomePage/categories')
+const {showFilter} = require('./db/HomePage/Filter')
 
 const app =express();
 app.use(cors());
@@ -58,6 +59,18 @@ app.get('/cart/remove',async(req,res)=>{
 
 app.get('/data/slider',async(req,res)=>{
     const data = await showSliders(req.query)
+    res.send(data);
+});
+
+app.get('/data/category',async(req,res)=>{
+    const data = await showcategory(req.query)
+    res.send(data);
+});
+
+
+
+app.get('/data/filter',async(req,res)=>{
+    const data = await showFilter(req.query)
     res.send(data);
 });
 

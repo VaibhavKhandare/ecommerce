@@ -1,25 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    sliderData: [
-    ],
-    categoriesData:[
-        {
-            id: 1,
-            img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-            title: "SHIRT STYLE!",
-          },
-          {
-            id: 2,
-            img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-            title: "LOUNGEWEAR LOVE",
-          },
-          {
-            id: 3,
-            img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-            title: "LIGHT JACKETS",
-          },
-    ],
+    sliderData: [],
+    categoriesData:[],
     productsData:[
         {
           img:"https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
@@ -47,6 +30,7 @@ const initialState = {
       pageNo: 1,
     },
     cartData: [],
+    filterData: {},
 }
 
 const apiSlice = createSlice({
@@ -64,9 +48,16 @@ const apiSlice = createSlice({
         },
         cardData(state,action){
           state.cardData = action.payload;
+        },
+        categoriesData(state,action){
+          state.categoriesData = action.payload;
+        },
+        filterData(state,action){
+          state.filterData = action.payload;
         }
+        
     }
 });
 
-export const { sliderData, cardsData, cartData, cardData}  = apiSlice.actions;
+export const { sliderData, cardsData, cartData, cardData, categoriesData, filterData}  = apiSlice.actions;
 export default apiSlice.reducer;

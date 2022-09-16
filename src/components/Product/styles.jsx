@@ -19,21 +19,13 @@ export const ImageContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    border-radius: 4px;
+    width: 4px !important;
   }
   &::-webkit-scrollbar-track-piece {
     margin: 10px 0px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #00000027;
-    border-radius: 10px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${COLOR.MEDIUM_GREY};
-    border-radius: 10px;
+    background: #00000027 !important;
   }
 `;
 

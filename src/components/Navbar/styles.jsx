@@ -7,13 +7,16 @@ export const NavbarContainer = Styled.div`
     border-bottom: 0.5px solid lightgrey;
 `;
 
-export const Header = Styled.div`
+export const Header = Styled.span`
     text-transform: uppercase;
     font-size: 24px;
     cursor: pointer;
+    margin-right: 10px;
 `;
 
 export const Right = Styled.div`
+    display:flex;
+    align-items:center;
 `;
 
 export const UserName = Styled.div`

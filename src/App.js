@@ -8,13 +8,34 @@ import ProductPage from './pages/ProductPage';
 import AllProducts from './components/AllProducts';
 import LoginPage from './pages/LoginPage';
 import Footer from './components/Footer';
+import Admin from './components/Admin';
 import PrivateComponent from './components/PrivateComponent';
 
 import User from './components/User';
 import styled from 'styled-components';
-
+import {COLOR}from './util/theme'
 const Container = styled.div`
 min-height: 100vh;
+*{
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-track-piece {
+    margin: 10px 0px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${COLOR.LIGHT_GREY};
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${COLOR.MEDIUM_GREY};
+    border-radius: 10px;
+  }
+}
+
 `;
 
 
@@ -31,7 +52,9 @@ function App() {
             <Route path='/product' element={<AllProducts />} />
             <Route path='/product/:id' element={<ProductPage/>} />
             <Route element={<PrivateComponent/>}>        
-            <Route path='/user' element={<User/>} />
+              <Route path='/user' element={<User/>} />
+              <Route path='/admin' element={<Admin/>} />
+
             </Route>        
             <Route path='/login' element={<LoginPage/>} />
             {/* <Route path="*" element={<Navigate to="/" />}/> */}

@@ -13,6 +13,7 @@ import {
 } from "./styles";
 import { categoriesData } from "../../store/apiSlice";
 import { getAPI } from "../../util/asyncAPIMethods";
+import { useNavigate } from "react-router-dom";
 
 const Categories = ({ categoriesData, categoriesDataFn }) => {
   useEffect(() => {
@@ -20,18 +21,24 @@ const Categories = ({ categoriesData, categoriesDataFn }) => {
       categoriesDataFn(res)
     );
   }, []);
-
+  const navigate = useNavigate();
   return (
     <Container>
       <TopTitle>TRENDING</TopTitle>
       <CategoryContainer>
-        {categoriesData?.map((data) => (
-          <CategoryItem>
+        {categoriesData?.map((data, idx) => (
+          <CategoryItem key={idx}>
             <Image src={data.imgUrl} alt="img" />
             <InfoContainer>
               <SpaceDiv />
               <Title>{data.title}</Title>
-              <ShopButton>SHOP NOW</ShopButton>
+              <ShopButton
+                onClick={() => {
+                  navigate(data.link);
+                }}
+              >
+                SHOP NOW
+              </ShopButton>
             </InfoContainer>
           </CategoryItem>
         ))}

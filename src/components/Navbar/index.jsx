@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Badge } from "antd";
+import { Badge, Button } from "antd";
 import { UserOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { NavbarContainer, Right, Left, Header, UserName } from "./styles";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ const Navbar = ({ cartData, cartDataFn }) => {
   const userName = userData?.name || "";
   const navigate = useNavigate();
   useEffect(() => {
-    // cartDataFn();
     if (userData?.name) {
       getAPI(`http://localhost:4000/user/${userData._id}`).then((res) =>
         cartDataFn(res?.cart)
@@ -29,6 +28,14 @@ const Navbar = ({ cartData, cartDataFn }) => {
         >
           LAMA
         </Header>
+        <Button
+          type="primary"
+          onClick={() => {
+            navigate("/admin");
+          }}
+        >
+          View Dashboard
+        </Button>
       </Right>
       <Left
         onClick={() => {

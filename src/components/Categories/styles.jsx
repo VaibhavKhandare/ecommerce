@@ -49,6 +49,12 @@ export const ShopButton = styled.span`
   padding: 5px 10px;
   color: ${COLOR.DARY_GREY};
   background-color: ${COLOR.LIGHT_WHITE};
+  cursor: pointer;
+  &:hover {
+    background-color: white;
+  }
+  transition-property: background-color;
+  transition-duration: 0.5s;
 `;
 
 export const InfoContainer = styled.div`

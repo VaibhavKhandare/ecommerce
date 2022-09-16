@@ -27,6 +27,7 @@ const Login = () => {
     e.preventDefault();
     if (e.target.reenterPassword.value !== e.target.password.value) {
       setErr("Password dont match");
+      navigate(`/`);
       return;
     }
     const data = {

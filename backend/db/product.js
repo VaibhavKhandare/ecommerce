@@ -126,7 +126,8 @@ module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,remov
 // }
 // categoryMaker();
 //add data according to json file
-// const proddata = require('./data/myntra_fashion_products_free_dataset.json')
+// const proddata = require('../data/')
+// const proddata = require('../data/myntra_fashion_products_free_dataset.json')
 // proddata.forEach((data)=>{
 //     const images = data.images.split('~')
 //     const ProdDetails =new ProductModel({
@@ -134,7 +135,6 @@ module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,remov
 //         price: data.price,
 //         items: 10,
 //         brand: data.brand,
-//         reviews: [],
 //         rating: 4.0,
 //         description: data.description,
 //         images,

@@ -17,7 +17,6 @@ export const SliderContainer = styled.div`
   .add-card {
     border-radius: 5px;
     box-shadow: ${SHADOW.DARK_SHADOW};
-
     cursor: pointer;
     margin: 5px;
     width: 300px;
@@ -29,7 +28,7 @@ export const SliderContainer = styled.div`
     border: 0.5px dotted grey;
   }
   img {
-    height: 400px;
+    height: 350px;
   }
   .icons {
     position: absolute;
@@ -73,7 +72,7 @@ export const SliderContainer = styled.div`
   }
   .info {
     position: relative;
-    height: 70px;
+    height: 100px;
     ul {
       position: absolute;
       height: 100%;

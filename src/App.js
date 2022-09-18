@@ -18,6 +18,7 @@ const Container = styled.div`
 min-height: 100vh;
 h1,h2,h3,h4,h5,h6{
   font-family: "Roboto Slab", serif;
+  text-transform: capitalize;
 }
 *{
   &::-webkit-scrollbar {

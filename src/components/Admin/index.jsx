@@ -3,7 +3,7 @@ import Slider from "./Slider";
 import PreviewSlider from "../Slider";
 import PreviewCategory from "../Categories";
 
-// import Products from "./Products";
+import Analysis from "./Analysis";
 import TopProducts from "./TopProducts";
 import AllProducts from "../AllProducts";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ export const Container = styled.div`
 const Admin = () => {
   return (
     <Container>
+      <Analysis />
       <Slider />
       <br />
       <Collapse defaultActiveKey={["1"]}>

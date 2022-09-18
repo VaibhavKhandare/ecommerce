@@ -23,7 +23,6 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
   });
   useEffect(() => {
     const auth = window.location.href;
-    console.log('auth.indexOf("admin") !== -1', auth.indexOf("admin") !== -1);
     if (auth.indexOf("admin") !== -1) {
       setIsAdmin(true);
     }

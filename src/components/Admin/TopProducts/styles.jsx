@@ -13,7 +13,6 @@ export const Container = styled.div`
   .add-card {
     border-radius: 5px;
     box-shadow: ${SHADOW.DARK_SHADOW};
-
     cursor: pointer;
     margin: 5px;
     width: 300px;
@@ -69,7 +68,8 @@ export const Container = styled.div`
   }
   .info {
     position: relative;
-    height: 70px;
+    height: 100px;
+    overflow: hidden;
     ul {
       position: absolute;
       height: 100%;

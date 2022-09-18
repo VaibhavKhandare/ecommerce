@@ -47,6 +47,7 @@ const Login = () => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
+    console.log("clicked");
   };
   return (
     <Container>

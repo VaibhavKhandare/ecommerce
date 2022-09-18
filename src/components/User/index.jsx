@@ -9,7 +9,7 @@ import { cartData } from "../../store/apiSlice";
 import { connect } from "react-redux";
 
 const Container = styled.div`
-  min-height: 80vh;
+  min-height: 85vh;
   display: grid;
   place-items: center;
   font-family: "Roboto Slab", serif;
@@ -99,7 +99,7 @@ const User = ({ cartData, cartDataFn }) => {
         <Button
           onClick={() => {
             localStorage.clear();
-            navigate("/");
+            navigate("/login");
           }}
         >
           Click to logout

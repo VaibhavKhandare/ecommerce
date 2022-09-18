@@ -57,7 +57,6 @@ const searchUser = async (_id)=>{
 }
 
 
-
 module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser}
 
 //add data according to json file

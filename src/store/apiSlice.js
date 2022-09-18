@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    analysisData:{},
     sliderData: [],
     categoryData:[],
     productsData:[
@@ -54,10 +55,13 @@ const apiSlice = createSlice({
         },
         filterData(state,action){
           state.filterData = action.payload;
+        },
+        analysisData(state,action){
+          state.analysisData = action.payload;
         }
         
     }
 });
 
-export const { sliderData, cardsData, cartData, cardData, categoryData, filterData}  = apiSlice.actions;
+export const { sliderData, cardsData, cartData, cardData, categoryData, filterData, analysisData}  = apiSlice.actions;
 export default apiSlice.reducer;

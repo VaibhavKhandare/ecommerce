@@ -110,10 +110,14 @@ const Admin = ({ categoryData, categoryDataFn }) => {
               <div className="info">
                 <ul>
                   <li>
-                    {"title"}: {data["title"]}
+                    <h3>
+                      {"title"}: {data["title"]}
+                    </h3>
                   </li>
                   <li>
-                    {"link"}: {data["link"]}
+                    <h3>
+                      {"link"}: {data["link"]}
+                    </h3>
                   </li>
                 </ul>
                 <div className="icons">

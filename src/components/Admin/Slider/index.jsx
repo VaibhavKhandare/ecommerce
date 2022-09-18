@@ -113,9 +113,15 @@ const Admin = ({ sliderData, sliderDataFn }) => {
               <img src={data.imgUrl} alt="slider"></img>
               <div className="info">
                 <ul>
-                  <li>discount: {data.discount}</li>
-                  <li>link: {data.link}</li>
-                  <li>title: {data.title}</li>
+                  <li>
+                    <h3>discount: {data.discount}</h3>
+                  </li>
+                  <li>
+                    <h3>link: {data.link}</h3>
+                  </li>
+                  <li>
+                    <h3>title: {data.title}</h3>
+                  </li>
                 </ul>
                 <div className="icons">
                   <div className="icon-wrapper">

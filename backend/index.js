@@ -3,8 +3,52 @@ const express = require('express')
 const {show,showAll,showIndex, showPage,addProduct,editProduct,removeProduct} = require('./db/product')
 const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
 const {showSliders,addSlider, removeSlider, editSlider} = require('./db/HomePage/slider')
+const {showAnalysis, increaseAnalysisData} = require('./db/Analysis')
 const {showcategory, addCategory, editCategory, removeCategory} = require('./db/HomePage/categories')
 const {showFilter} = require('./db/HomePage/Filter')
+
+const EventEmitter = require('events')
+const event = new EventEmitter();
+event.on('filter searched',(stringData)=>{
+    showAnalysis({}).then(res=>{
+        let flag = false;
+        if(stringData.search){
+            flag = true
+            res.search[stringData.search] = res.category[stringData.search] ?  res.category[stringData.search]+1: 1;
+        }
+        if(stringData.category){
+            flag = true
+            const categoryArray = stringData.category.split(',');
+            categoryArray.forEach((val)=>{
+                res.category[val] = res.category[val] ?  res.category[val]+1: 1;
+            })
+        }
+        if(stringData.brand){
+            flag = true
+            const brandArray = stringData.brand.split(',');
+            brandArray.forEach((val)=>{
+                res.brand[val] = res.brand[val] ?  res.brand[val]+1: 1;
+            })
+        }
+        if(stringData.color){
+            flag = true
+            const colorArray = stringData.color.split(',');
+            colorArray.forEach((val)=>{
+                res.color[val] = res.color[val] ?  res.color[val]+1: 1;
+            })
+        }
+        if(flag){
+            increaseAnalysisData(res)
+        };
+    })
+});
+event.on('visited',()=>{
+    showAnalysis({}).then(res=>{
+        res.visited= res.visited ? res.visited +1 : 1;
+        increaseAnalysisData(res);
+    })
+})
+
 
 const app =express();
 app.use(cors());
@@ -22,6 +66,7 @@ app.get('/search/all',async (req,res)=>{
 
 app.get('/search',async (req,res)=>{
     const pageNo = req.query.pageNo || 1
+    event.emit('filter searched', req.query);
     const data = await showPage({key:req.query},pageNo)
     res.send(data);
 })
@@ -58,6 +103,7 @@ app.get('/cart/remove',async(req,res)=>{
 });
 
 app.get('/data/slider',async(req,res)=>{
+    event.emit('visited')
     const data = await showSliders(req.query)
     res.send(data);
 });
@@ -112,7 +158,10 @@ app.post('/data/product/remove',async(req,res)=>{
     res.send(data);
 });
 
-
+app.get('/data/analysis/',async(req,res)=>{
+    const data = await showAnalysis({})
+    res.send(data);
+});
 
 
 app.get('/data/filter',async(req,res)=>{

@@ -1,9 +1,9 @@
 const cors = require('cors');
 const express = require('express')
-const {show,showAll,showIndex, showPage} = require('./db/product')
+const {show,showAll,showIndex, showPage,addProduct,editProduct,removeProduct} = require('./db/product')
 const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
-const {showSliders} = require('./db/HomePage/slider')
-const {showcategory} = require('./db/HomePage/categories')
+const {showSliders,addSlider, removeSlider, editSlider} = require('./db/HomePage/slider')
+const {showcategory, addCategory, editCategory, removeCategory} = require('./db/HomePage/categories')
 const {showFilter} = require('./db/HomePage/Filter')
 
 const app =express();
@@ -62,10 +62,56 @@ app.get('/data/slider',async(req,res)=>{
     res.send(data);
 });
 
+app.post('/data/slider/add',async(req,res)=>{
+    const data = await addSlider(req.body)
+    res.send(data);
+});
+
+app.post('/data/slider/edit',async(req,res)=>{
+    const data = await editSlider(req.body)
+    res.send(data);
+});
+
+app.post('/data/slider/remove',async(req,res)=>{
+    const data = await removeSlider(req.body)
+    res.send(data);
+});
+
 app.get('/data/category',async(req,res)=>{
     const data = await showcategory(req.query)
     res.send(data);
 });
+
+app.post('/data/category/add',async(req,res)=>{
+    const data = await addCategory(req.body)
+    res.send(data);
+});
+
+app.post('/data/category/edit',async(req,res)=>{
+    const data = await editCategory(req.body)
+    res.send(data);
+});
+
+app.post('/data/category/remove',async(req,res)=>{
+    const data = await removeCategory(req.body)
+    res.send(data);
+});
+
+app.post('/data/product/add',async(req,res)=>{
+    const data = await addProduct(req.body)
+    res.send(data);
+});
+
+app.post('/data/product/edit',async(req,res)=>{
+    const data = await editProduct(req.body)
+    res.send(data);
+});
+
+app.post('/data/product/remove',async(req,res)=>{
+    const data = await removeProduct(req.body)
+    res.send(data);
+});
+
 
 
 

@@ -78,8 +78,8 @@ const Filter = ({
         }}
       />
       <ChildContainer>
-        {Object.keys(checkBoxesData).map((header) => (
-          <>
+        {Object.keys(checkBoxesData).map((header, idx) => (
+          <div key={idx}>
             <ChildHeader key={header}>{header}</ChildHeader>
             <ChildBody>
               <span className="m-l-8"></span>
@@ -95,7 +95,7 @@ const Filter = ({
                 </Checkbox>
               ))}
             </ChildBody>
-          </>
+          </div>
         ))}
       </ChildContainer>
     </Box>
@@ -103,7 +103,7 @@ const Filter = ({
 };
 
 const mapStateToProps = (state) => {
-  const filterData = state?.apiData?.filterData;
+  const filterData = state?.apiData?.filterData || {};
   return { filterData };
 };
 

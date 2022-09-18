@@ -13,7 +13,24 @@ const showcategory = async ()=>{
     return data
 }
 
-module.exports = {showcategory}
+const addCategory = async(data)=>{
+    const ProdDetails =new CategoryModel(data)
+    let  errMsg  = ''
+    ProdDetails.save((err, doc) => {errMsg = err || ''  });
+    return {status: (errMsg ? 0 : 1)};
+}
+
+const editCategory = async(data)=>{
+    console.log('data', data)
+    await CategoryModel.updateOne({_id: data._id},{$set:data})
+    return {status: 1};
+};
+const removeCategory = async(data)=>{
+    await CategoryModel.deleteOne(data);
+    return {status: 1};
+};
+
+module.exports = {showcategory, addCategory, editCategory, removeCategory}
 
 // add data according to json file
 // const tempData = [

@@ -8,7 +8,6 @@ const ProductSchema = new mongoose.Schema({
     brand: String,
     description: String,
     images: Array,
-    reviews: Array,
     rating: Number,
 });
 const ProductModel =  mongoose.model.products|| mongoose.model('products', ProductSchema);
@@ -87,8 +86,23 @@ const showPage = async ({key},pageNo=1)=>{
     return pageData
 }
 
+const addProduct = async(data)=>{
+    const ProdDetails =new ProductModel(data)
+    let  errMsg  = ''
+    ProdDetails.save((err, doc) => {errMsg = err || ''  });
+    return {status: (errMsg ? 0 : 1)};
+}
 
-module.exports = {show,showAll,showIndex, showPage}
+const editProduct = async(data)=>{
+    await ProductModel.updateOne({_id:data._id},{$set:data})
+    return {status: 1};
+};
+const removeProduct = async(data)=>{
+    await ProductModel.deleteOne(data);
+    return {status: 1};
+};
+
+module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,removeProduct}
 
 // const fs = require('fs');
 // const Brands = {}

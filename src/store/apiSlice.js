@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     sliderData: [],
-    categoriesData:[],
+    categoryData:[],
     productsData:[
         {
           img:"https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
@@ -49,8 +49,8 @@ const apiSlice = createSlice({
         cardData(state,action){
           state.cardData = action.payload;
         },
-        categoriesData(state,action){
-          state.categoriesData = action.payload;
+        categoryData(state,action){
+          state.categoryData = action.payload;
         },
         filterData(state,action){
           state.filterData = action.payload;
@@ -59,5 +59,5 @@ const apiSlice = createSlice({
     }
 });
 
-export const { sliderData, cardsData, cartData, cardData, categoriesData, filterData}  = apiSlice.actions;
+export const { sliderData, cardsData, cartData, cardData, categoryData, filterData}  = apiSlice.actions;
 export default apiSlice.reducer;

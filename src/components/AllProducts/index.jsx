@@ -4,7 +4,6 @@ import { getAPI } from "../../util/asyncAPIMethods";
 import { Layout } from "antd";
 import { Loader } from "../../util/loader";
 import { Header, Footer, MainContainer, CustomPagination } from "./styles";
-
 import { cardsData } from "../../store/apiSlice";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import NoDataFound from "../../util/NoDataFound";
@@ -12,6 +11,8 @@ import { CardsContainer } from "../common";
 import Filter from "../Filter";
 
 const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [refresh, setIsRefresh] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [filterState, setFilterStateFn] = useState({
@@ -21,6 +22,11 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
     color: [],
   });
   useEffect(() => {
+    const auth = window.location.href;
+    console.log('auth.indexOf("admin") !== -1', auth.indexOf("admin") !== -1);
+    if (auth.indexOf("admin") !== -1) {
+      setIsAdmin(true);
+    }
     const params = new URLSearchParams(window.location.search);
     getAPI("http://localhost:4000/search/", params.entries()).then((data) => {
       setIsLoading(false);
@@ -42,6 +48,10 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
       cardsDataFn(data);
     });
   };
+
+  useEffect(() => {
+    paginationFn();
+  }, [refresh]);
 
   const itemRender = (_, type, originalElement) => {
     if (type === "prev") {
@@ -79,7 +89,11 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
             {isLoading ? (
               <Loader />
             ) : data.length ? (
-              <CardsContainer data={data} />
+              <CardsContainer
+                data={data}
+                isAdmin={isAdmin}
+                setIsRefresh={setIsRefresh}
+              />
             ) : (
               <NoDataFound></NoDataFound>
             )}

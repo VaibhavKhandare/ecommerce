@@ -1,54 +1,45 @@
-import { connect } from "react-redux";
 import React from "react";
-import { Container, SliderContainer } from "./styles";
-import { sliderData } from "../../store/apiSlice";
-import { useEffect } from "react";
-import { getAPI } from "../../util/asyncAPIMethods";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Slider from "./Slider";
+import PreviewSlider from "../Slider";
+import PreviewCategory from "../Categories";
 
-const Admin = ({ sliderData, sliderDataFn }) => {
-  useEffect(() => {
-    getAPI("http://localhost:4000/data/slider").then((res) =>
-      sliderDataFn(res)
-    );
-  }, []);
-  console.log("sliderData", sliderData);
+// import Products from "./Products";
+import TopProducts from "./TopProducts";
+import AllProducts from "../AllProducts";
+import styled from "styled-components";
+import { Collapse } from "antd";
+export const Container = styled.div`
+  min-height: 85vh;
+  margin-inline: 30px;
+`;
+const Admin = () => {
   return (
     <Container>
-      <SliderContainer>
-        {sliderData.map((data) => {
-          return (
-            <div className="container">
-              <img src={data.imgUrl} alt="slider"></img>
-              <div className="info">
-                <ul>
-                  <li>discount: {data.discount}</li>
-                  <li>link: {data.link}</li>
-                  <li>title: {data.title}</li>
-                </ul>
-                <div className="icons">
-                  <div className="icon-wrapper">
-                    <EditOutlined />
-                  </div>
-                  <div className="icon-wrapper">
-                    <DeleteOutlined />
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-        <div className="add-card">
-          <div>+</div>
-        </div>
-      </SliderContainer>
+      <Slider />
+      <br />
+      <Collapse defaultActiveKey={["1"]}>
+        <Collapse.Panel
+          header={<h1 style={{ margin: 0 }}>Slider Preview</h1>}
+          key="1"
+        >
+          <PreviewSlider />
+        </Collapse.Panel>
+      </Collapse>
+      <TopProducts />
+      <br />
+      <Collapse defaultActiveKey={["1"]}>
+        <Collapse.Panel
+          style={{ margin: 0 }}
+          header={<h1 style={{ margin: 0 }}>Top Preview</h1>}
+          key="1"
+        >
+          <PreviewCategory />
+        </Collapse.Panel>
+      </Collapse>
+      <br />
+      <AllProducts />
     </Container>
   );
 };
 
-const mapStateToProps = (state) => {
-  const { sliderData } = state?.apiData;
-  return { sliderData };
-};
-
-export default connect(mapStateToProps, { sliderDataFn: sliderData })(Admin);
+export default Admin;

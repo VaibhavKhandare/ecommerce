@@ -39,8 +39,8 @@ const Slider = ({ sliderData, sliderDataFn }) => {
     if (hovered) return;
     const slideInterval = setInterval(() => {
       setShift((val) => {
-        if (val === 0) SLIDER_DIRECTION = 1;
-        else if (val === sliderData.length - 1) SLIDER_DIRECTION = -1;
+        if (val <= 0) SLIDER_DIRECTION = 1;
+        else if (val >= sliderData.length - 1) SLIDER_DIRECTION = -1;
         return val + SLIDER_DIRECTION;
       });
     }, 2000);

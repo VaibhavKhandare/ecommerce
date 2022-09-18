@@ -1,4 +1,3 @@
-import { Slider } from "antd";
 import styled, { keyframes } from "styled-components";
 import { COLOR } from "../../util/theme";
 
@@ -59,7 +58,7 @@ export const Slide = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  transform: translateX(-${(props) => props.shift}vw);
+  transform: translateX(-${(props) => props.shift}%);
   transition-property: transform;
   transition-duration: 1s;
   cursor: pointer;

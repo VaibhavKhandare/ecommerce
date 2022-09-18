@@ -95,8 +95,8 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
     <>
       <Container>
         <ImageContainer>
-          {images.map((val) => (
-            <ImgContainer>
+          {images.map((val, idx) => (
+            <ImgContainer key={idx}>
               <Image src={val} />
             </ImgContainer>
           ))}
@@ -126,10 +126,6 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
           <br />
           <Desc>{cardData.description}</Desc>
           <br />
-          <ReviewContainer>
-            Reviews
-            {cardData?.reviews?.map((val) => val)}
-          </ReviewContainer>
         </InfoContainer>
       </Container>
       <SimilarProductsContainer>

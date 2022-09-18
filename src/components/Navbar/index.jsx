@@ -28,14 +28,16 @@ const Navbar = ({ cartData, cartDataFn }) => {
         >
           LAMA
         </Header>
-        <Button
-          type="primary"
-          onClick={() => {
-            navigate("/admin");
-          }}
-        >
-          View Dashboard
-        </Button>
+        {userName === "admin" && (
+          <Button
+            type="primary"
+            onClick={() => {
+              navigate("/admin");
+            }}
+          >
+            View Dashboard
+          </Button>
+        )}
       </Right>
       <Left
         onClick={() => {

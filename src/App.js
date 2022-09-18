@@ -16,6 +16,9 @@ import styled from 'styled-components';
 import {COLOR}from './util/theme'
 const Container = styled.div`
 min-height: 100vh;
+h1,h2,h3,h4,h5,h6{
+  font-family: "Roboto Slab", serif;
+}
 *{
   &::-webkit-scrollbar {
     width: 10px;

@@ -11,14 +11,14 @@ import {
   InfoContainer,
   SpaceDiv,
 } from "./styles";
-import { categoriesData } from "../../store/apiSlice";
+import { categoryData } from "../../store/apiSlice";
 import { getAPI } from "../../util/asyncAPIMethods";
 import { useNavigate } from "react-router-dom";
 
-const Categories = ({ categoriesData, categoriesDataFn }) => {
+const Categories = ({ categoryData, categoryDataFn }) => {
   useEffect(() => {
     getAPI("http://localhost:4000/data/category").then((res) =>
-      categoriesDataFn(res)
+      categoryDataFn(res)
     );
   }, []);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Categories = ({ categoriesData, categoriesDataFn }) => {
     <Container>
       <TopTitle>TRENDING</TopTitle>
       <CategoryContainer>
-        {categoriesData?.map((data, idx) => (
+        {categoryData?.map((data, idx) => (
           <CategoryItem key={idx}>
             <Image src={data.imgUrl} alt="img" />
             <InfoContainer>
@@ -34,7 +34,7 @@ const Categories = ({ categoriesData, categoriesDataFn }) => {
               <Title>{data.title}</Title>
               <ShopButton
                 onClick={() => {
-                  navigate(data.link);
+                  navigate(`/product/?${data.link}`);
                 }}
               >
                 SHOP NOW
@@ -49,10 +49,10 @@ const Categories = ({ categoriesData, categoriesDataFn }) => {
 
 const mapStateToProps = (state) => {
   const { apiData } = state;
-  const { categoriesData } = apiData;
-  return { categoriesData };
+  const { categoryData } = apiData;
+  return { categoryData };
 };
 
-export default connect(mapStateToProps, { categoriesDataFn: categoriesData })(
+export default connect(mapStateToProps, { categoryDataFn: categoryData })(
   Categories
 );

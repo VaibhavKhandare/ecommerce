@@ -17,7 +17,7 @@ const Login = () => {
       if (res?.status === 1) {
         message.info("Logged in Successfully");
         localStorage.setItem("user", JSON.stringify(res.data));
-        navigate(`/`);
+        navigate(res.data.name != "admin" ? `/` : "/admin");
       } else {
         setErr("Invalid Credentials");
       }
@@ -27,7 +27,6 @@ const Login = () => {
     e.preventDefault();
     if (e.target.reenterPassword.value !== e.target.password.value) {
       setErr("Password dont match");
-      navigate(`/`);
       return;
     }
     const data = {
@@ -39,6 +38,7 @@ const Login = () => {
       if (res?.status === 1) {
         message.info("Account Created Successfully");
         localStorage.setItem("user", JSON.stringify(res.data));
+        navigate(`/`);
       } else {
         setErr(res.msg);
       }

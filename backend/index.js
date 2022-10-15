@@ -1,5 +1,9 @@
 const cors = require('cors');
 const express = require('express')
+const dotenv = require("dotenv")
+dotenv.config({path: './config.env'});
+
+
 const {show,showAll,showIndex, showPage,addProduct,editProduct,removeProduct} = require('./db/product')
 const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
 const {showSliders,addSlider, removeSlider, editSlider} = require('./db/HomePage/slider')
@@ -167,6 +171,14 @@ app.get('/data/analysis/',async(req,res)=>{
 app.get('/data/filter',async(req,res)=>{
     const data = await showFilter(req.query)
     res.send(data);
-});
+})
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    });
+   }
 
-app.listen(4000)
+
+const PORT = process.env.PORT || 4000
+app.listen(PORT)

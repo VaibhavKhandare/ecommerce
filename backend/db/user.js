@@ -25,7 +25,7 @@ const createUser = async (userData)=>{
     }
 }
 const loginUser = async (userData)=>{    
-    const data = await UserModel.findOne({name:userData.userNameEmail});
+    const data = await UserModel.findOne({name:userData.userNameEmail}) || await UserModel.findOne({email:userData.userNameEmail});
     if(data && data?.password === userData.password){
         const {name, _id} = data;
         return {status:1, msg: 'Logged in SuccessFully', data: {name, _id}} 
@@ -33,13 +33,12 @@ const loginUser = async (userData)=>{
     return {status:0, msg: 'Invalid Credentials'}
 }
 const addToCart = async (prodData)=>{    
-    const {userId, productId, name, price} = prodData
+    const {userId='', productId, name, price} = prodData
     await UserModel.updateOne(
         { _id: userId }, 
         { $push: { cart: {productId, name, price} } }
     );
     const data = await UserModel.findById(userId);
-    // console.log('data', data?.cart)
     return data?.cart;
 }
 const removeFromCart = async (prodData)=>{

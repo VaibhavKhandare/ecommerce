@@ -27,8 +27,31 @@ const Container = styled.div`
 const User = ({ cartData, cartDataFn }) => {
   // const [rows, setRows] = useState([]);
   const auth = JSON.parse(localStorage.getItem("user") || "{}");
+  const [buy, setBuy] = useState([]);
   const userName = auth.name;
   const navigate = useNavigate();
+  const BuyColumns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Link",
+      dataIndex: "productId",
+      key: "link",
+      sorter: (a, b) => a.productId - b.productId,
+      render: (text) => (
+        <a
+          onClick={() => {
+            navigate(`/product/${text}`);
+          }}
+        >
+          <LinkOutlined />
+        </a>
+      ),
+    },
+  ];
   const columns = [
     {
       title: "Name",
@@ -81,6 +104,7 @@ const User = ({ cartData, cartDataFn }) => {
   useEffect(() => {
     getAPI(`/user/${auth._id}`).then((res) => {
       cartDataFn(res.cart);
+      setBuy(res.buy);
     });
   }, []);
 
@@ -90,7 +114,11 @@ const User = ({ cartData, cartDataFn }) => {
         <br />
         <h1>{userName},</h1>
         <h2>Your Shopping Cart</h2>
-        <Table dataSource={cartData} columns={columns} />
+        <Table dataSource={cartData || []} columns={columns} />
+        <br />
+        <h2>Your Orders</h2>
+        <Table dataSource={buy || []} columns={BuyColumns} />
+        <br />
         <br />
         <Button onClick={() => navigate("/")} type="primary">
           Go To HomePage

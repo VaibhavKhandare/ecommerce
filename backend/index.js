@@ -4,8 +4,9 @@ const dotenv = require("dotenv")
 dotenv.config({path: './config.env'});
 
 
-const {show,showAll,showIndex, showPage,addProduct,editProduct,removeProduct} = require('./db/product')
-const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser} = require('./db/user')
+const {show,showAll,showIndex, showPage,addProduct,editProduct,removeProduct,reduceItemCount} = require('./db/product')
+const {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser, addToBuy} = require('./db/user')
+const {showAllBuys, createBuy} = require('./db/admin')
 const {showSliders,addSlider, removeSlider, editSlider} = require('./db/HomePage/slider')
 const {showAnalysis, increaseAnalysisData} = require('./db/Analysis')
 const {showcategory, addCategory, editCategory, removeCategory} = require('./db/HomePage/categories')
@@ -132,6 +133,11 @@ app.get('/data/category',async(req,res)=>{
     res.send(data);
 });
 
+app.get('/buy/product/:id',async(req,res)=>{
+    res.send( await reduceItemCount({_id: req.params.id}));
+    res.send(data);
+});
+
 app.post('/data/category/add',async(req,res)=>{
     const data = await addCategory(req.body)
     res.send(data);
@@ -167,17 +173,28 @@ app.get('/data/analysis/',async(req,res)=>{
     res.send(data);
 });
 
-
 app.get('/data/filter',async(req,res)=>{
     const data = await showFilter(req.query)
     res.send(data);
 })
+
+app.get('/buy/all',async(req,res)=>{
+    const data = await showAllBuys(req.query)
+    res.send(data);
+})
+
+app.post('/buy/add',async(req,res)=>{
+    createBuy(req.body)
+    const data = await addToBuy(req.body)
+    res.send(data);
+})
+
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
     app.use(express.static('client/build'));
     app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+        res.sendFile(path.join(__dirname + '/client/build/index.html'));    
     });
-   }
+}
 
 
 const PORT = process.env.PORT || 4000

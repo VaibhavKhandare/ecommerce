@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     email: {type: String,unique: true},
     password: String,
     cart: Array,
+    buy: Array,
 });
 const UserModel = mongoose.model('users', UserSchema);
 
@@ -41,6 +42,19 @@ const addToCart = async (prodData)=>{
     const data = await UserModel.findById(userId);
     return data?.cart;
 }
+const addToBuy = async (prodData)=>{   
+    const { userId, productId, name} = prodData
+    await UserModel.updateOne(
+        { _id: userId }, 
+        { $push: { buy: {productId, name} } }
+    );
+    return removeFromCart(prodData).then(async res=>{
+        const data = await UserModel.findById(userId);
+        const {productId, _id}= prodData;
+        return {status: 1, msg: 'Purchased successfully', data: {productId, _id}, cart: data?.cart};
+    })
+}
+
 const removeFromCart = async (prodData)=>{
     const {userId, productId} = prodData
     await UserModel.updateMany(
@@ -56,7 +70,7 @@ const searchUser = async (_id)=>{
 }
 
 
-module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser}
+module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart, searchUser, addToBuy}
 
 //add data according to json file
 // const proddata = require('./data/myntra_fashion_products_free_dataset.json')
@@ -80,3 +94,14 @@ module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart
 //     return data
 // }
 // console.log(deleteAll())
+const adminID = '63273858f5bd6c4c38839ca4'
+
+// const removeUpdates = async ()=>{
+//     const prevData = await UserModel.findById(adminID)
+//     // console.log('res', res)
+//     prevData.buy=[];
+//     const data = await UserModel.updateOne({_id: adminID},{$set:prevData})
+//     console.log('data', prevData)
+//         // CategoryModel.updateOne({_id: data._id},{$set:data})
+// }
+// removeUpdates()

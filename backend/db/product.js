@@ -102,7 +102,14 @@ const removeProduct = async(data)=>{
     return {status: 1};
 };
 
-module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,removeProduct}
+const reduceItemCount = async(data)=>{
+    const prevData = await ProductModel.findById(data._id)
+    prevData.items -= 1
+    await ProductModel.updateOne({_id:data._id},{$set:prevData})
+    return {status: 1};
+};
+
+module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,removeProduct, reduceItemCount}
 
 // const fs = require('fs');
 // const Brands = {}

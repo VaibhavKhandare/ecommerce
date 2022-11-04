@@ -15,7 +15,7 @@ import {
 import { StarFilled } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { cardData, cartData } from "../../store/apiSlice";
-import { getAPI } from "../../util/asyncAPIMethods";
+import { getAPI, postAPI } from "../../util/asyncAPIMethods";
 import { useState } from "react";
 import { CardsContainer } from "../common";
 import { Button, message } from "antd";
@@ -86,6 +86,29 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
       }
     });
   };
+  const handleBuy = () => {
+    if (auth._id) {
+      getAPI(url).then((data = {}) => {
+        if (data.items > 0) {
+          const addBuy = {
+            productId: url.split("/")[2],
+            userId: auth._id,
+            status: 0,
+            name: cardData?.name,
+          };
+          postAPI("/buy/add", addBuy).then((res) => {
+            if (res.status) {
+              message.info(res.msg);
+              setIsAlreadyInCart(0);
+              cartDataFn(res.cart);
+            }
+          });
+        }
+      });
+    } else {
+      navigate("/login");
+    }
+  };
 
   const { images = [] } = cardData;
   return (
@@ -119,6 +142,10 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
               Remove From Cart
             </Button>
           )}
+          &nbsp;
+          <Button type="primary" size="large" onClick={handleBuy}>
+            Buy Now
+          </Button>
           <br />
           <br />
           <Desc>{cardData.description}</Desc>

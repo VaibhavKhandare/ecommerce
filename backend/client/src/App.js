@@ -81,7 +81,6 @@ function App() {
             <Route element={<PrivateComponent/>}>        
               <Route path='/user' element={<User/>} />
               <Route path='/admin' element={<Admin/>} />
-
             </Route>        
             <Route path='/login' element={<LoginPage/>} />
             <Route path="*" element={<Navigate to="/" />}/>

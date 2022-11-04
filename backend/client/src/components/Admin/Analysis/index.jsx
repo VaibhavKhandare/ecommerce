@@ -96,7 +96,7 @@ const Analysis = ({ analysisDataFn, analysisData = {} }) => {
         dataSource={userData}
         columns={columns}
       ></Table>
-      <h1>Total {analysisData.visited} user visited</h1>
+      <h1>Total Website Visit - {analysisData.visited} </h1>
     </>
   );
 };

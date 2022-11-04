@@ -94,7 +94,7 @@ module.exports = {showAllUsers, createUser, loginUser, addToCart, removeFromCart
 //     return data
 // }
 // console.log(deleteAll())
-const adminID = '63273858f5bd6c4c38839ca4'
+// const adminID = '63273858f5bd6c4c38839ca4'
 
 // const removeUpdates = async ()=>{
 //     const prevData = await UserModel.findById(adminID)

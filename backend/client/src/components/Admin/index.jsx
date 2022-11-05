@@ -2,14 +2,14 @@ import React from "react";
 import Slider from "./Slider";
 import PreviewSlider from "../Slider";
 import PreviewCategory from "../Categories";
-
 import Analysis from "./Analysis";
 import Orders from "./Orders";
-
+import Money from "./Money";
 import TopProducts from "./TopProducts";
 import AllProducts from "../AllProducts";
 import styled from "styled-components";
 import { Collapse, Tabs } from "antd";
+
 export const Container = styled.div`
   min-height: 85vh;
 `;
@@ -17,6 +17,8 @@ const items = [
   { label: "Analysis", key: "item-1", children: <Analysis /> },
 
   { label: "Orders", key: "item-2", children: <Orders /> },
+
+  { label: "Money", key: "item-6", children: <Money /> },
 
   {
     label: "Slider",

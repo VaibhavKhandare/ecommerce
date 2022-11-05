@@ -97,7 +97,6 @@ const Admin = ({ categoryData = [], categoryDataFn }) => {
       >
         <Forms />
       </Modal>
-      <br />
       <h1>Edit category</h1>
       <Container>
         {(categoryData || []).map((data, idx) => {

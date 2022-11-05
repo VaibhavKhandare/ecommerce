@@ -98,10 +98,20 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
           };
           postAPI("/buy/add", addBuy).then((res) => {
             if (res.status) {
-              message.info(res.msg);
               setIsAlreadyInCart(0);
               cartDataFn(res.cart);
             }
+          });
+          postAPI("/buy/checkout", {
+            items: [
+              {
+                name: data.name,
+                price: data.price,
+                quantity: 1,
+              },
+            ],
+          }).then((res) => {
+            window.open(res.url, "_self");
           });
         }
       });

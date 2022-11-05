@@ -101,7 +101,6 @@ const Admin = ({ sliderData, sliderDataFn }) => {
       >
         <Forms />
       </Modal>
-      <br />
       <h1>Edit Slider</h1>
       <SliderContainer>
         {sliderData.map((data, idx) => {
@@ -140,6 +139,7 @@ const Admin = ({ sliderData, sliderDataFn }) => {
           <div>+</div>
         </div>
       </SliderContainer>
+      <br />
     </Container>
   );
 };

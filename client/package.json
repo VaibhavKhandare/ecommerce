@@ -1,6 +1,5 @@
 {
   "name": "ecommerce",
-  "proxy": "https://ecommerce-q1md.onrender.com",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://vaibhavkhandare.github.io",

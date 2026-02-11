@@ -51,17 +51,16 @@ Node API + React client + Python NLP service (semantic search) + Milvus. One rep
 
 ## 4. Milvus (vector DB for semantic search)
 
-- With Docker (persist data in `nlp-service/milvus/volumes/milvus`):
+- No persistence needed; index is rebuilt when you reindex (e.g. `POST /search/reindex` from the API). Run with Docker:
   ```bash
-  docker run -d -p 19530:19530 \
-    -v "$(pwd)/nlp-service/milvus/volumes/milvus:/var/lib/milvus" \
-    milvusdb/milvus:latest
+  docker run -d -p 19530:19530 milvusdb/milvus:latest
   ```
-- Milvus: **localhost:19530** (gRPC). NLP service connects via `MILVUS_URI` in `.env`.
+- Milvus: **localhost:19530**. NLP service connects via `MILVUS_URI` in `.env`. After backend is up, call reindex once to fill the index.
 
 ## Run order
 
-1. Start Milvus (Docker).
+1. Start Milvus: `docker run -d -p 19530:19530 milvusdb/milvus:latest`
 2. Start NLP service (`cd nlp-service`, venv, `python app.py`).
 3. Start Node backend (`npm start` from backend root).
-4. Start client (`cd client && npm start`).
+4. Reindex once (e.g. `POST http://localhost:4000/search/reindex` or use your app’s reindex flow).
+5. Start client (`cd client && npm start`).

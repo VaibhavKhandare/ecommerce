@@ -78,6 +78,3 @@
     color: #111827;
   }
 }
-
-/* Import the processed Tailwind CSS when it's generated */
-@import './tailwind.css';

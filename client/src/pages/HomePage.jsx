@@ -1,17 +1,14 @@
 import React from "react";
-import Slider from "../components/Slider";
-import Categories from "../components/Categories";
 import AllProducts from "../components/AllProducts";
-import Home from "./Home";
+import Categories from "../components/Categories";
+import Slider from "../components/Slider";
 
 const HomePage = () => {
   return (
     <>
       <Slider />
       <Categories />
-      {/* <TopProducts /> */}
       <AllProducts />
-      <Home />
     </>
   );
 };

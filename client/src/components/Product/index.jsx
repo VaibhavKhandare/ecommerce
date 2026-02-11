@@ -16,9 +16,10 @@ import { StarFilled } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { cardData, cartData } from "../../store/apiSlice";
 import { getAPI, postAPI } from "../../util/asyncAPIMethods";
+import { clearPreference, getPreference, setPreference } from "../../util/preferenceMemory";
 import { useState } from "react";
 import { CardsContainer } from "../common";
-import { Button, message } from "antd";
+import { Button, Input, message, Tag } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const Stars = ({ rating, reviewLength }) => (
@@ -31,9 +32,14 @@ const Stars = ({ rating, reviewLength }) => (
 const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
   const auth = JSON.parse(localStorage.getItem("user") || "{}");
   const [similarData, setSimilarData] = useState([]);
+  const [preference, setPreferenceState] = useState(() => getPreference());
+  const [preferenceInput, setPreferenceInput] = useState("");
   const navigate = useNavigate();
   const [url, setUrl] = useState(window.location.pathname);
   const [isAlreadyInCart, setIsAlreadyInCart] = useState(0);
+  useEffect(() => {
+    setPreferenceState(getPreference());
+  }, [url]);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     getAPI(url).then((data) => {
@@ -51,11 +57,38 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
           }
         });
       }
-      getAPI("/search", { brand: data.brand }).then((sdata) => {
-        setSimilarData(sdata?.data);
+      const id = url.split("/").pop();
+      const pref = getPreference();
+      const similarParams = pref ? { preference: pref } : {};
+      getAPI(`/product/${id}/similar`, similarParams).then((sdata) => {
+        setSimilarData(Array.isArray(sdata) ? sdata : sdata?.data || []);
       });
     });
   }, [url]);
+
+  const handleSavePreference = () => {
+    const val = (preferenceInput || "").trim();
+    if (val) {
+      setPreference(val);
+      setPreferenceState(val);
+      setPreferenceInput("");
+      message.success("Preference saved. Similar products will use it.");
+      const id = url.split("/").pop();
+      getAPI(`/product/${id}/similar`, { preference: val }).then((sdata) => {
+        setSimilarData(Array.isArray(sdata) ? sdata : sdata?.data || []);
+      });
+    }
+  };
+
+  const handleClearPreference = () => {
+    clearPreference();
+    setPreferenceState(null);
+    const id = url.split("/").pop();
+    getAPI(`/product/${id}/similar`, {}).then((sdata) => {
+      setSimilarData(Array.isArray(sdata) ? sdata : sdata?.data || []);
+    });
+    message.info("Preference cleared.");
+  };
   const handleCartAdd = (data) => {
     if (!auth._id) {
       navigate("/login");
@@ -164,6 +197,31 @@ const Product = ({ cardData = {}, cartDataFn, cardDataFn }) => {
       </Container>
       <SimilarProductsContainer>
         <h1>Similar Products</h1>
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 8, fontSize: 12, color: "#666" }}>
+            Preference memory: personalize recommendations (e.g. &quot;casual cotton under 2000&quot;).
+          </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            <Input
+              placeholder="e.g. casual, under 2000, cotton"
+              value={preferenceInput}
+              onChange={(e) => setPreferenceInput(e.target.value)}
+              onPressEnter={handleSavePreference}
+              style={{ maxWidth: 280 }}
+            />
+            <Button type="primary" size="small" onClick={handleSavePreference}>
+              Save
+            </Button>
+            {preference && (
+              <>
+                <Tag color="blue">Using: {preference}</Tag>
+                <Button type="link" size="small" onClick={handleClearPreference}>
+                  Clear
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
         <CardsContainer data={similarData} setUrl={setUrl}></CardsContainer>
       </SimilarProductsContainer>
     </>

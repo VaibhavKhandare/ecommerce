@@ -28,6 +28,12 @@ const showIndex = async (id)=>{
     return data
 }
 
+const showByIds = async (ids) => {
+    if (!ids || !ids.length) return [];
+    const objectIds = ids.map(id => new mongoose.Types.ObjectId(id));
+    return ProductModel.find({ _id: { $in: objectIds } });
+}
+
 const RegexMaker = (key={}) => {
     const Regex = [];
     const CategoryRegex = []
@@ -39,9 +45,13 @@ const RegexMaker = (key={}) => {
         Regex.push({$or: [{name:{$regex:new RegExp(key.search, "i")}},{brand:{$regex:new RegExp(key.search, "i")}}]})
     }
     if(key.price){
-        const [minPrice, maxPrice] = key.price.split(',');
-        isFilter= true;
-        Regex.push({$or: [{price: { $lte: maxPrice || 1000000000, $gte: minPrice || 0 }}]})
+        const parts = key.price.split(',');
+        const minPrice = Number(parts[0]);
+        const maxPrice = Number(parts[1]);
+        if (!Number.isNaN(minPrice) || !Number.isNaN(maxPrice)) {
+            isFilter = true;
+            Regex.push({ price: { $lte: Number.isNaN(maxPrice) ? 1000000000 : maxPrice, $gte: Number.isNaN(minPrice) ? 0 : minPrice } });
+        }
     }
     if(key.category){
         isFilter= true;
@@ -76,6 +86,26 @@ const RegexMaker = (key={}) => {
     return isFilter ? { $and: Regex } : {};
 }
 
+function applyFiltersInMemory(products, key = {}) {
+    if (!key || (!key.price && !key.category && !key.brand && !key.color)) return products;
+    const priceStr = Array.isArray(key.price) ? key.price.join(',') : (key.price || '');
+    const [minP, maxP] = priceStr ? priceStr.split(',').map(Number) : [0, 1/0];
+    const catArr = (Array.isArray(key.category) ? key.category.join(',') : (key.category || '')).split(',').filter(Boolean);
+    const brandArr = (Array.isArray(key.brand) ? key.brand.join(',') : (key.brand || '')).split(',').filter(Boolean);
+    const colorArr = (Array.isArray(key.color) ? key.color.join(',') : (key.color || '')).split(',').filter(Boolean);
+    return products.filter((p) => {
+        const doc = p.toObject ? p.toObject() : p;
+        const price = doc.price != null ? Number(doc.price) : 0;
+        if (priceStr && (price < minP || price > maxP)) return false;
+        const name = (doc.name || '').toLowerCase();
+        const brand = (doc.brand || '').toLowerCase();
+        if (catArr.length && !catArr.some((c) => name.includes(c.toLowerCase()))) return false;
+        if (brandArr.length && !brandArr.some((b) => brand.includes(b.toLowerCase()))) return false;
+        if (colorArr.length && !colorArr.some((c) => name.includes(c.toLowerCase()))) return false;
+        return true;
+    });
+}
+
 const PageSize = 20
 
 const showPage = async ({key},pageNo=1)=>{
@@ -87,10 +117,13 @@ const showPage = async ({key},pageNo=1)=>{
 }
 
 const addProduct = async(data)=>{
-    const ProdDetails =new ProductModel(data)
-    let  errMsg  = ''
-    ProdDetails.save((err, doc) => {errMsg = err || ''  });
-    return {status: (errMsg ? 0 : 1)};
+    const ProdDetails = new ProductModel(data);
+    try {
+        const doc = await ProdDetails.save();
+        return { status: 1, doc };
+    } catch (err) {
+        return { status: 0 };
+    }
 }
 
 const editProduct = async(data)=>{
@@ -109,7 +142,7 @@ const reduceItemCount = async(data)=>{
     return {status: 1};
 };
 
-module.exports = {show,showAll,showIndex, showPage, addProduct,editProduct,removeProduct, reduceItemCount}
+module.exports = { show, showAll, showIndex, showByIds, showPage, addProduct, editProduct, removeProduct, reduceItemCount, applyFiltersInMemory, RegexMaker }
 
 // const fs = require('fs');
 // const Brands = {}

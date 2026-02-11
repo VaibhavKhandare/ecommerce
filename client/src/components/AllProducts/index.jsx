@@ -22,10 +22,7 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
     color: [],
   });
   useEffect(() => {
-    const auth = window.location.href;
-    if (auth.indexOf("admin") !== -1) {
-      setIsAdmin(true);
-    }
+    if (window.location.href.indexOf("admin") !== -1) setIsAdmin(true);
     const params = new URLSearchParams(window.location.search);
     getAPI("/search/", params.entries()).then((data) => {
       setIsLoading(false);
@@ -34,9 +31,10 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
   }, []);
 
   const paginationFn = (pageNo = 1) => {
+    const search = searchValue.trim();
     setIsLoading(true);
     getAPI("/search/", {
-      search: searchValue.trim(),
+      search,
       pageNo: pageNo,
       price: filterState.priceRange,
       category: filterState.category,
@@ -122,7 +120,7 @@ const Products = ({ cardsDataFn, data = [], totalPage, pageNo = 1 }) => {
 
 const mapStateToProps = (state) => {
   const { apiData } = state;
-  const { cardsData = {} } = apiData;
+  const { cardsData = {}, filterData = {} } = apiData;
   const { data, totalPage, pageNo } = cardsData;
   return { data, totalPage, pageNo };
 };

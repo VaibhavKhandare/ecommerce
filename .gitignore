@@ -1,3 +1,11 @@
 /node_modules
 /config.env
 .vercel
+
+# NLP service
+nlp-service/.env
+nlp-service/venv/
+nlp-service/.venv/
+nlp-service/__pycache__/
+nlp-service/*.pyc
+nlp-service/milvus/volumes/

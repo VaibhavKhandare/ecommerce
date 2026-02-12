@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from contextlib import asynccontextmanager
 
@@ -46,12 +47,16 @@ def text_for_product(p: dict) -> str:
     return remove_stopwords(raw) or "product"
 
 
+def _milvus_uri():
+    uri = os.getenv("MILVUS_URI", "http://localhost:19530")
+    if ":8000" in uri or uri.rstrip("/").endswith(":8000"):
+        return "http://localhost:19530"  # 8000 is NLP service, not Milvus
+    return uri
+
+
 def ensure_collection():
     if not connections.has_connection("default"):
-        connections.connect(
-            "default",
-            uri=os.getenv("MILVUS_URI", "http://localhost:19530"),
-        )
+        connections.connect("default", uri=_milvus_uri())
     from pymilvus import CollectionSchema, FieldSchema, DataType
 
     try:
@@ -62,7 +67,16 @@ def ensure_collection():
                     utility.drop_collection(COLLECTION_NAME)
                     break
             else:
-                return col
+                try:
+                    idx = col.indexes[0] if col.indexes else None
+                    params = getattr(idx, "params", {}) if idx else {}
+                    idx_type = str(params.get("index_type", "")).upper()
+                    if idx_type != "HNSW":
+                        utility.drop_collection(COLLECTION_NAME)
+                    else:
+                        return col
+                except Exception:
+                    utility.drop_collection(COLLECTION_NAME)
     except Exception:
         pass
     fields = [
@@ -76,9 +90,9 @@ def ensure_collection():
     col.create_index(
         "embedding",
         {
-            "index_type": "IVF_PQ",
+            "index_type": "HNSW",
             "metric_type": "IP",
-            "params": {"nlist": 1024, "m": 12, "nbits": 8},
+            "params": {"M": 16, "efConstruction": 200},
         },
     )
     return col
@@ -89,9 +103,10 @@ async def lifespan(app: FastAPI):
     app.state.model = get_embedding_model()
     try:
         app.state.collection = ensure_collection()
+        print("HNSW index ready. Call POST /search/reindex to sync products from MongoDB.")
     except Exception as e:
         app.state.collection = None
-        print(f"Milvus not available: {e}. Index and search will fail until Milvus is running.")
+        print(f"Milvus not available: {e}. Run: docker run -d -p 19530:19530 milvusdb/milvus:latest")
     yield
 
 
@@ -187,13 +202,13 @@ def search(q: str, limit: int = 20):
     if not q or not q.strip():
         return {"results": []}
     query = remove_stopwords(q.strip().lower()) or q.strip().lower()
-    limit = min(max(1, int(limit)), 200)
+    limit = min(max(1, int(limit)), 64)
     vec = app.state.model.encode([query]).tolist()
     col.load()
     results = col.search(
         data=vec,
         anns_field="embedding",
-        param={"metric_type": "IP", "params": {"nprobe": 64}},
+        param={"metric_type": "IP", "params": {"ef": 64}},
         limit=limit,
         output_fields=["product_id"],
     )
@@ -204,7 +219,20 @@ def search(q: str, limit: int = 20):
     return {"results": out}
 
 
+@app.api_route("/socket.io{suffix:path}", methods=["GET", "POST"], include_in_schema=False)
+def socket_io_reject(suffix: str = ""):
+    """Reject Milvus UI/tools that mistakenly connect here. Milvus is at localhost:19530."""
+    raise HTTPException(400, "Milvus is at localhost:19530. This is the NLP API on port 8000.")
+
+
+class SkipSocketIoFilter(logging.Filter):
+    def filter(self, record):
+        msg = str(getattr(record, "msg", "")) + str(getattr(record, "args", ""))
+        return "socket.io" not in msg
+
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "8000"))
+    logging.getLogger("uvicorn.access").addFilter(SkipSocketIoFilter())
     uvicorn.run(app, host="0.0.0.0", port=port)

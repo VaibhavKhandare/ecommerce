@@ -103,7 +103,7 @@ async function semanticSearch(q, pageNo = 1, limit = 20, key = {}) {
     const pageNoInt = Math.max(1, parseInt(pageNo) || 1);
     const limitInt = Math.min(50, Math.max(1, parseInt(limit) || 20));
     const hasFilters = key.price || key.category || key.brand || key.color;
-    const requested = hasFilters ? Math.min(500, 50 * 10) : Math.min(pageNoInt * limitInt, 200);
+    const requested = 64;
     const r = await fetch(`${NLP_SERVICE_URL}/search?q=${encodeURIComponent(query)}&limit=${requested}`);
     if (!r.ok) throw new Error('NLP service unavailable');
     const { results } = await r.json();

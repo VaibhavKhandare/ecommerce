@@ -2,7 +2,7 @@
 
 Embeddings + Milvus for semantic product search. **Port:** 8000 (set `PORT` in `.env` to change).
 
-**Requires:** Python 3.10+, Milvus 2.x (see backend README for Docker command).
+**Requires:** Python 3.10+, Milvus 2.x on port **19530** (see backend README). For Attu UI, connect to `localhost:19530` (not 8000).
 
 ```bash
 cp .env.example .env   # MILVUS_URI (default http://localhost:19530), PORT (default 8000)

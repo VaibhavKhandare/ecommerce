@@ -33,6 +33,7 @@ Node API + React client + Python NLP service (semantic search) + Milvus. One rep
   npm start
   ```
 - App: **http://localhost:3000**
+- **Frontend-only (no backend):** Set `REACT_APP_USE_DUMMY=true` before build. The app will use built-in dummy data (slider, categories, 6 products). Set `REACT_APP_API_URL` to your API URL when using a backend.
 
 ## 3. NLP service (Python)
 
